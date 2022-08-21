@@ -7,14 +7,20 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    BuildingMaterial Material => materials[materialIndex];
+
     [SerializeField] SpriteRenderer pointerSprite;
-    [SerializeField] SpriteRenderer woodPrefab;
-    [SerializeField] SpriteRenderer stonePrefab;
-    [SerializeField] SpriteRenderer concretePrefab;
+    [SerializeField] BuildingMaterial[] materials;
     [SerializeField] Material lineMaterial;
     [SerializeField] GraphicRaycaster grt;
     [SerializeField] GraphicRaycaster gr;
     [SerializeField] Sprite circleSprite;
+    [SerializeField] Camera mainCam;
+    [SerializeField] Game game;
+    bool inConnectMode;
+    int materialIndex;
+    int size;
+
     List<LineRenderer> lineRenderers;
     List<FixedJoint2D> fixedJoints;
     List<GameObject> oneGobs;
@@ -27,35 +33,30 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        p = pointerSprite.GetComponent<Pointer>();
+
         lineRenderers = new List<LineRenderer>();
         fixedJoints = new List<FixedJoint2D>();
         oneGobs = new List<GameObject>();
         twoGobs = new List<GameObject>();
 
-        p = pointerSprite.GetComponent<Pointer>();
+        size = 1;
     }
 
     void Update()
     {
         RenderLines();
 
-        mousePosInWorld = C.mainCam.ScreenToWorldPoint(Input.mousePosition);
+        mousePosInWorld = mainCam.ScreenToWorldPoint(Input.mousePosition);
 
         pointerSprite.transform.position = mousePosInWorld;
 
-        if (!C.game.storming && !C.gameOver)
+        if (!game.storming && !Game.I.GameOver)
         {
             p.gameObject.SetActive(true);
 
-            if (!C.InConnectMode)
+            if (!inConnectMode)
             {
-                switch (C.currentMaterial)
-                {
-                    case C.Material.wood: pointerSprite.sprite = woodPrefab.sprite; break;
-                    case C.Material.stone: pointerSprite.sprite = stonePrefab.sprite; break;
-                    case C.Material.concrete: pointerSprite.sprite = concretePrefab.sprite; break;
-                }
-
                 if (Input.GetMouseButtonDown(0))
                 {
                     PointerEventData ped = new PointerEventData(null);
@@ -69,35 +70,7 @@ public class Player : MonoBehaviour
 
                     if (results.Count == 0 && !p.currentOverGob)
                     {
-                        switch (C.currentMaterial)
-                        {
-                            case C.Material.wood:
 
-                                var wood = Instantiate(woodPrefab, mousePosInWorld, p.transform.rotation);
-                                wood.transform.localScale = new Vector3(C.size, C.size);
-                                wood.GetComponent<Rigidbody2D>().mass += C.size - 1;
-                                C.audioHandler.soundEffectAudioSource.PlayOneShot(C.audioHandler.PlaceDownWoodSound());
-
-                                break;
-
-                            case C.Material.stone:
-
-                                var stone = Instantiate(stonePrefab, mousePosInWorld, p.transform.rotation);
-                                stone.transform.localScale = new Vector3(C.size, C.size);
-                                stone.GetComponent<Rigidbody2D>().mass += C.size - 1;
-                                C.audioHandler.soundEffectAudioSource.PlayOneShot(C.audioHandler.PlaceDownStoneSound());
-
-                                break;
-
-                            case C.Material.concrete:
-
-                                var concrete = Instantiate(concretePrefab, mousePosInWorld, p.transform.rotation);
-                                concrete.transform.localScale = new Vector3(C.size, C.size);
-                                concrete.GetComponent<Rigidbody2D>().mass += C.size - 1;
-                                C.audioHandler.soundEffectAudioSource.PlayOneShot(C.audioHandler.PlaceDownConcreteSound());
-
-                                break;
-                        }
                     }
                 }
             }
@@ -125,9 +98,9 @@ public class Player : MonoBehaviour
                             {
                                 lineR = overGobOne.AddComponent<LineRenderer>();
 
-                                lineR.SetColors(new Color(.5f, 1, .5f), new Color(1, 1, 1));
+                                //lineR.colorGradient = new Gradient(); new Color(.5f, 1, .5f), new Color(1, 1, 1);
+                                //lineR.SetWidth(.015f, .06f);
                                 lineR.material = lineMaterial;
-                                lineR.SetWidth(.015f, .06f);
 
                                 lineRenderers.Add(lineR);
                                 oneGobs.Add(overGobOne);
@@ -166,12 +139,12 @@ public class Player : MonoBehaviour
                             overGobTwo.GetComponent<SpriteRenderer>().color = Color.white;
                             overGobTwo = null;
 
-                            C.audioHandler.soundEffectAudioSource.PlayOneShot(C.audioHandler.AttachSound());
+                            AudioHandler.I.PlayGeneralSfx("Attach");
                         }
                         else
                         {
                             overGobOne = p.currentOverGob;
-                            overGobOne.GetComponent<SpriteRenderer>().color = C.hightlightedColor;
+                            //overGobOne.GetComponent<SpriteRenderer>().color = hightlightedColor;
                         }
                     }
                     else
@@ -187,31 +160,31 @@ public class Player : MonoBehaviour
                 {
                     if (!p.currentOverGob) { return; }
 
-                    C.audioHandler.soundEffectAudioSource.PlayOneShot(C.audioHandler.DeleteSound());
+                    AudioHandler.I.PlayGeneralSfx("Delete");
                     Destroy(p.currentOverGob);
                 }
             }
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                C.InConnectMode = !C.InConnectMode;
+                inConnectMode = !inConnectMode;
                 pointerSprite.sprite = circleSprite;
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                C.InConnectMode = false;
-                C.size = 1;
+                inConnectMode = false;
+                size = 1;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                C.InConnectMode = false;
-                C.size = 2;
+                inConnectMode = false;
+                size = 2;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                C.InConnectMode = false;
-                C.size = 3;
+                inConnectMode = false;
+                size = 3;
             }
         }
         else
@@ -232,7 +205,7 @@ public class Player : MonoBehaviour
         {
             if (fixedJoints[i] == null || lineRenderers[i] == null || oneGobs[i] == null || twoGobs[i] == null || Vector2.Distance(oneGobs[i].transform.position, twoGobs[i].transform.position) > 2f)
             {
-                C.audioHandler.soundEffectAudioSource.PlayOneShot(C.audioHandler.BreakAttachmentSound());
+                AudioHandler.I.PlayGeneralSfx("Break Attachment");
                 Destroy(lineRenderers[i]);
                 Destroy(fixedJoints[i]);
                 lineRenderers.RemoveAt(i);

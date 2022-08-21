@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Person : MonoBehaviour
 {
     [SerializeField] GameObject healthUi;
     [SerializeField] Image healthBar;
+    [SerializeField] UnityEvent Died;
     Transform healthBarPosition;
     ParticleSystem ps;
     SpriteRenderer sr;
@@ -39,7 +41,7 @@ public class Person : MonoBehaviour
         if (rb.velocity.magnitude > (.2f))
         {
             health -= (rb.velocity.magnitude * 3);
-            C.audioHandler.soundEffectAudioSource.PlayOneShot(C.audioHandler.PainSound());
+            AudioHandler.I.PlayGeneralSfx("Pain");
             UpdateHealthBar();
 
             if (health <= 0)
@@ -52,7 +54,7 @@ public class Person : MonoBehaviour
 
                 dead = true;
                 ps.Emit(100);
-                C.audioHandler.soundEffectAudioSource.PlayOneShot(C.audioHandler.DieSound());
+                AudioHandler.I.PlayGeneralSfx("Die");
             }
         }
 
@@ -93,7 +95,8 @@ public class Person : MonoBehaviour
 
     void Die()
     {
-        C.gameOver = true;
+        //gameOver = true;
+        Died?.Invoke();
         Destroy(this.gameObject);
     }
 

@@ -34,10 +34,10 @@ public class Weather : MonoBehaviour
         if (!rain.isPlaying)
         {
             rain.Play();
-            C.audioHandler.RainSoundAudioSource().Play();
+            //audioHandler.RainSoundAudioSource().Play();
         }
 
-        C.mainCamAni.Play("Flash");
+        //mainCamAni.Play("Flash");
 
         Invoke("Explode", .15f);
 
@@ -52,18 +52,18 @@ public class Weather : MonoBehaviour
         Vector2 direction = Vector2.down;
         float distance = 30;
 
-        RaycastHit2D hit = Physics2D.Raycast(position, direction, distance, ~(1 << C.windLayer));
+        //RaycastHit2D hit = Physics2D.Raycast(position, direction, distance, ~(1 << windLayer));
 
-        Instantiate(explosionPrefab, hit.point, Quaternion.identity);
+        //Instantiate(explosionPrefab, hit.point, Quaternion.identity);
 
-        C.audioHandler.soundEffectAudioSource.PlayOneShot(C.audioHandler.LightningStrikeSound());
+        //audioHandler.soundEffectAudioSource.PlayOneShot(audioHandler.LightningStrikeSound());
     }
 
     void Earthquake()
     {
-        C.mainCamAni.Play("CameraShake");
+        //mainCamAni.Play("CameraShake");
         ground.GetComponent<Animator>().enabled = true;
-        C.audioHandler.EarthQuakeSoundAudioSource().Play();
+        //audioHandler.EarthQuakeSoundAudioSource().Play();
     }
 
     IEnumerator Wind()
@@ -84,7 +84,7 @@ public class Weather : MonoBehaviour
 
     IEnumerator RainMeteor()
     {
-        C.audioHandler.soundEffectAudioSource.PlayOneShot(C.audioHandler.MeteorPoopSounds());
+        //audioHandler.soundEffectAudioSource.PlayOneShot(audioHandler.MeteorPoopSounds());
 
         var meteor = Instantiate(meteorPrefab, new Vector3(Random.Range(-8f, 8f), 8f), Quaternion.Euler(0, 0, Random.Range(0, 361)), transform);
 
@@ -104,7 +104,7 @@ public class Weather : MonoBehaviour
             case State.earthquake: Earthquake(); break;
             case State.lightningStorm: StartCoroutine(Lightning()); break;
             case State.rainingMeteors: StartCoroutine(RainMeteor()); break;
-            case State.windy: C.audioHandler.WindSoundAudioSource().Play(); StartCoroutine(Wind()); while (windDir == 0) { windDir = Random.Range(-1, 2); } break;
+            case State.windy: AudioHandler.I.PlayWeatherSfx("Wind"); StartCoroutine(Wind()); while (windDir == 0) { windDir = Random.Range(-1, 2); } break;
         }
     }
 
@@ -113,7 +113,7 @@ public class Weather : MonoBehaviour
         StopAllCoroutines();
 
         ground.GetComponent<Animator>().enabled = false;
-        C.mainCamAni.Play("Idle");
+        //mainCamAni.Play("Idle");
         windDir = 0;
 
         if (rain.isPlaying)
@@ -121,9 +121,9 @@ public class Weather : MonoBehaviour
             rain.Stop();
         }
 
-        C.audioHandler.EarthQuakeSoundAudioSource().Stop();
-        C.audioHandler.RainSoundAudioSource().Stop();
-        C.audioHandler.WindSoundAudioSource().Stop();
+        //audioHandler.EarthQuakeSoundAudioSource().Stop();
+        //audioHandler.RainSoundAudioSource().Stop();
+        //audioHandler.WindSoundAudioSource().Stop();
 
         if (startAgain)
         {
@@ -164,8 +164,6 @@ public class Weather : MonoBehaviour
         var rb = collision.gameObject.GetComponent<Rigidbody2D>();
 
         if (rb)
-        {
             rb.velocity += new Vector2(Time.deltaTime * windIntensity * windDir, 0);
-        }
     }
 }

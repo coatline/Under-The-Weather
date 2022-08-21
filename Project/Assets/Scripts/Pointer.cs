@@ -22,7 +22,7 @@ public class Pointer : MonoBehaviour
 
     private void Update()
     {
-        transform.localScale = new Vector3(C.size, C.size, C.size);
+        //transform.localScale = new Vector3(size, size);
 
         var rot = Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime;
 

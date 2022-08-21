@@ -7,19 +7,19 @@ public class ButtonManager : MonoBehaviour
 {
     public void ChangeMaterialSelection(int matNum)
     {
-        switch (matNum)
-        {
-            case 1: C.currentMaterial = C.Material.wood; break;
-            case 2: C.currentMaterial = C.Material.stone; break;
-            case 3: C.currentMaterial = C.Material.concrete; break;
-        }
+        //switch (matNum)
+        //{
+        //    case 1: currentMaterial = BuildingMaterial.wood; break;
+        //    case 2: currentMaterial = BuildingMaterial.stone; break;
+        //    case 3: currentMaterial = BuildingMaterial.concrete; break;
+        //}
 
-        C.InConnectMode = false;
+        //InConnectMode = false;
     }
 
     public void ChangeMaterialLength(int length)
     {
-        C.size = length;
+        //size = length;
     }
 
     public void ChangeScene(int buildIndex)
