@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9dbbb0b63a1c44fa8b2fdd654b29ca, type: 3}
+  m_Name: Meteor Pop
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: 02f2a4ad98093824cb3d76b70dd9accf, type: 3}
+  - {fileID: 8300000, guid: 50e4994c0419f9c4fb68445adcbccf2f, type: 3}
+  - {fileID: 8300000, guid: 15de17b9d04d8cd4cb822f6a9d2892cb, type: 3}
+  - {fileID: 8300000, guid: 5f8c45524d2dd2744b3334102072f824, type: 3}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 [CreateAssetMenu(menuName = "Disaster", fileName = "Disaster")]
 
-public class Disaster : ScriptableObject
+public class DisasterType : ScriptableObject
 {
     [SerializeField] AudioClip ambience;
     [SerializeField] Sprite icon;

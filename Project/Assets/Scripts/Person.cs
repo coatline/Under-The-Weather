@@ -9,24 +9,18 @@ public class Person : MonoBehaviour
     [SerializeField] GameObject healthUi;
     [SerializeField] Image healthBar;
     [SerializeField] UnityEvent Died;
-    Transform healthBarPosition;
-    ParticleSystem ps;
-    SpriteRenderer sr;
-    Rigidbody2D rb;
+    [SerializeField] Transform healthBarPosition;
+    [SerializeField] ParticleSystem dieParticles;
+    [SerializeField] SpriteRenderer sr;
+    [SerializeField] Rigidbody2D rb;
+    [SerializeField] float maxHealth = 100;
 
-    float maxHealth = 100;
     float health;
     bool dead;
 
     void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
-        ps = GetComponent<ParticleSystem>();
-        rb = GetComponent<Rigidbody2D>();
-
         health = maxHealth;
-
-        healthBarPosition = transform.GetChild(0);
 
         StartCoroutine(Move());
     }
@@ -41,7 +35,7 @@ public class Person : MonoBehaviour
         if (rb.velocity.magnitude > (.2f))
         {
             health -= (rb.velocity.magnitude * 3);
-            AudioHandler.I.PlayGeneralSfx("Pain");
+            SoundManager.I.PlaySound("Pain", transform.position);
             UpdateHealthBar();
 
             if (health <= 0)
@@ -53,8 +47,9 @@ public class Person : MonoBehaviour
                 Invoke("Die", 4f);
 
                 dead = true;
-                ps.Emit(100);
-                AudioHandler.I.PlayGeneralSfx("Die");
+                dieParticles.Emit(100);
+
+                SoundManager.I.PlaySound("Die", transform.position);
             }
         }
 

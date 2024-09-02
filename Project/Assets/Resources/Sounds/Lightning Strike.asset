@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9dbbb0b63a1c44fa8b2fdd654b29ca, type: 3}
+  m_Name: Lightning Strike
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: 6eaa648ec99ba4148b1445e75bbd6219, type: 3}
+  - {fileID: 8300000, guid: b43d1307760aa0742ae14e21ee334f4d, type: 3}
+  - {fileID: 8300000, guid: 101b693cbfd85aa49988a52ae43a115b, type: 3}
+  - {fileID: 8300000, guid: 9e224b5c716676d4a9265e76991c50e5, type: 3}

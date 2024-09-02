@@ -15,7 +15,6 @@ public class Player : MonoBehaviour
     [SerializeField] GraphicRaycaster grt;
     [SerializeField] GraphicRaycaster gr;
     [SerializeField] Sprite circleSprite;
-    [SerializeField] Camera mainCam;
     [SerializeField] Game game;
     bool inConnectMode;
     int materialIndex;
@@ -47,11 +46,9 @@ public class Player : MonoBehaviour
     {
         RenderLines();
 
-        mousePosInWorld = mainCam.ScreenToWorldPoint(Input.mousePosition);
-
         pointerSprite.transform.position = mousePosInWorld;
 
-        if (!game.storming && !Game.I.GameOver)
+        if (!game.IsDisastering && !Game.I.GameOver)
         {
             p.gameObject.SetActive(true);
 
@@ -139,7 +136,7 @@ public class Player : MonoBehaviour
                             overGobTwo.GetComponent<SpriteRenderer>().color = Color.white;
                             overGobTwo = null;
 
-                            AudioHandler.I.PlayGeneralSfx("Attach");
+                            SoundManager.I.PlaySound("Attach", transform.position, 1, 0);
                         }
                         else
                         {
@@ -160,7 +157,7 @@ public class Player : MonoBehaviour
                 {
                     if (!p.currentOverGob) { return; }
 
-                    AudioHandler.I.PlayGeneralSfx("Delete");
+                    SoundManager.I.PlaySound("Delete", transform.position, 1, 0);
                     Destroy(p.currentOverGob);
                 }
             }
@@ -205,7 +202,7 @@ public class Player : MonoBehaviour
         {
             if (fixedJoints[i] == null || lineRenderers[i] == null || oneGobs[i] == null || twoGobs[i] == null || Vector2.Distance(oneGobs[i].transform.position, twoGobs[i].transform.position) > 2f)
             {
-                AudioHandler.I.PlayGeneralSfx("Break Attachment");
+                SoundManager.I.PlaySound("Break Attachment", transform.position, 1, 0);
                 Destroy(lineRenderers[i]);
                 Destroy(fixedJoints[i]);
                 lineRenderers.RemoveAt(i);

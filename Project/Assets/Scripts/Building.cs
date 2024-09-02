@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Building : MonoBehaviour
 {
-    [SerializeField] Sound soundOnPlace;
-    [SerializeField] Sound soundOnBreak;
     [SerializeField] float maxHp;
     [SerializeField] int cost;
 

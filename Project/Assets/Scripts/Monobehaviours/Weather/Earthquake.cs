@@ -2,17 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Earthquake : MonoBehaviour
+public class Earthquake : DisasterBehavior
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] AudioSource audioSource;
+    Animator groundAnimator;
+
+    private void Start()
     {
-        
+        groundAnimator = Extensions.FindObjectOfNameFromArray("Ground", FindObjectsOfType<Animator>()) as Animator;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Begin()
     {
-        
+        //mainCamAni.Play("CameraShake");
+        audioSource.Play();
+        groundAnimator.enabled = true;
+    }
+
+    public override void Stop()
+    {
+        audioSource.Stop();
+        groundAnimator.enabled = false;
     }
 }
