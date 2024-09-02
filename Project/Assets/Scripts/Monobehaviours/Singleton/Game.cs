@@ -23,6 +23,7 @@ public class Game : Singleton<Game>
     [SerializeField] TMP_Text modeText;
     [SerializeField] TMP_Text timeText;
     [SerializeField] Image gameOverUi;
+
     Weather doubleWeatherScript;
     Weather weatherScript;
     public bool storming;

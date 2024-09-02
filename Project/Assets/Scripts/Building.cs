@@ -8,6 +8,7 @@ public class Building : MonoBehaviour
     [SerializeField] Sound soundOnBreak;
     [SerializeField] float maxHp;
     [SerializeField] int cost;
+
     float hp;
 
     void Start()
